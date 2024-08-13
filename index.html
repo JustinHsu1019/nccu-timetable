@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>課表</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .course {
+            background-color: #e7f7ff;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .url-input-container {
+            margin-bottom: 20px;
+        }
+
+        .url-input {
+            width: 80%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        .url-button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>課表</h1>
+
+    <div class="url-input-container">
+        <input type="text" id="url-input" class="url-input" placeholder="請輸入課程 URL">
+        <button id="load-url" class="url-button">載入課表</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>節次/星期</th>
+                <th>一</th>
+                <th>二</th>
+                <th>三</th>
+                <th>四</th>
+                <th>五</th>
+                <th>六</th>
+                <th>日</th>
+            </tr>
+        </thead>
+        <tbody id="schedule-table">
+            <tr id="A">
+                <td>A</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="B">
+                <td>B</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="1">
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="2">
+                <td>2</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="3">
+                <td>3</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="4">
+                <td>4</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="C">
+                <td>C</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="D">
+                <td>D</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="5">
+                <td>5</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="6">
+                <td>6</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="7">
+                <td>7</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="8">
+                <td>8</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="E">
+                <td>E</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="F">
+                <td>F</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="G">
+                <td>G</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="H">
+                <td>H</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+async function loadSchedule() {
+    const url = document.getElementById('url-input').value;
+    if (url) {
+        localStorage.setItem('courseUrl', url);
+        try {
+            const response = await fetch('schedule.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ url: url })
+            });
+
+            console.log(response);
+
+            const data = await response.json().catch(error => {
+                console.error('Error parsing JSON:', error);
+                return null;
+            });
+
+            if (data) {
+                console.log('Parsed JSON:', data);
+
+                for (const period in data) {
+                    if (data.hasOwnProperty(period)) {
+                        const scheduleRow = document.getElementById(period);
+
+                        if (scheduleRow) {
+                            const cells = scheduleRow.querySelectorAll('td:not(:first-child)');
+
+                            for (let day = 0; day < 7; day++) {
+                                if (cells[day]) {
+                                    cells[day].innerHTML = data[period][day] ? `<div class="course">${data[period][day]}</div>` : '';
+                                } else {
+                                    console.error(`Cannot find cell for day ${day} in period ${period}`);
+                                }
+                            }
+                        } else {
+                            console.error(`Cannot find row for period ${period}`);
+                        }
+                    }
+                }
+            } else {
+                console.error('Failed to parse JSON data.');
+            }
+        } catch (error) {
+            console.error('Failed to load schedule:', error);
+        }
+    } else {
+        alert('請輸入課程 URL');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const savedUrl = localStorage.getItem('courseUrl');
+    if (savedUrl) {
+        document.getElementById('url-input').value = savedUrl;
+    }
+
+    document.getElementById('load-url').addEventListener('click', loadSchedule);
+});
+    </script>
+</body>
+
+</html>
