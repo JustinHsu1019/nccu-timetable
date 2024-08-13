@@ -19,6 +19,6 @@ src="https://img.youtube.com/vi/f5LlhgWk_30/0.jpg" style="background-color:rgba(
 1. 右鍵單擊頁面並選擇 "檢查" (或按下 F12) 並選擇 "網路" 分頁
 1. 點擊課程查詢系統網站中的「我的追蹤清單」
 1. 在 "網路" 分頁中，會出現一個傳輸封包的列表，找到 "名稱" 欄位並點擊該封包，然後複製其網址
-1. 打開 (https://justin-code.io/timetab)[https://justin-code.io/timetab]
+1. 打開 [https://justin-code.io/timetab](https://justin-code.io/timetab)
 1. 將複製的網址粘貼到網站上方的網址欄中
 1. 點擊 "載入課表"，即可視覺化查看您目前的課表
