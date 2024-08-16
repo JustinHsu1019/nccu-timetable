@@ -96,8 +96,8 @@
                 reader.onload = (e) => {
                     const content = e.target.result;
 
-                    const courseNameRegex = /<td[^>]*class="[^"]*subject-name[^"]*"[^>]*>(.*?)<\/td>/g;
-                    const courseTimeRegex = />([^<]+)<\/td><td[^>]*class="[^"]*list-status[^"]*"[^>]*>/g;
+                    const courseNameRegex = /<td _ngcontent-ng-c2018455205="" mat-cell="" class="mat-mdc-cell mdc-data-table__cell cdk-cell no-data-th subject-name cdk-column-subNam mat-column-subNam ng-star-inserted">\s*(.*?)\s*<span _ngcontent-ng-c2018455205="" class="d-md-none">.*?<\/span>\s*<\/td>/g;
+                    const courseTimeRegex = /<td _ngcontent-ng-c2018455205="" mat-cell="" class="mat-mdc-cell mdc-data-table__cell cdk-cell no-data-th list-class-time cdk-column-subOdr mat-column-subOdr ng-star-inserted">\s*<span _ngcontent-ng-c2018455205="" hidden="">.*?<\/span>(.*?)<\/td>/g;
         
                     let courseNames = [];
                     let courseTimes = [];
@@ -106,7 +106,7 @@
                     let timeMatch;
 
                     while ((nameMatch = courseNameRegex.exec(content)) !== null) {
-                        const courseName = nameMatch[1].replace(/<[^>]+>/g, '').trim();
+                        const courseName = nameMatch[1].trim();
                         courseNames.push(courseName);
                     }
 
