@@ -226,7 +226,7 @@ async function loadSchedule() {
     if (url) {
         localStorage.setItem('courseUrl', url);
         try {
-            const response = await fetch('schedule.php', {
+            const response = await fetch('backend/schedule.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
